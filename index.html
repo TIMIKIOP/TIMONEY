@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timoney Dashboard</title>
+
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+
+    <header class="navbar">
+      <h1>TIMONEY DASHBOARD</h1>
+      <button id="financeToggle" class="nav-btn">Finance Updates</button>
+      <button id="logoutBtn">Logout</button>
+    </header>
+
+    <!-- FINANCE SLIDE PANEL (RIGHT SIDE) -->
+    <div id="financePanel" class="finance-panel">
+      <h3>📊 Finance Updates</h3>
+
+      <div class="side-card">
+        <h4>📈 Market Highlights</h4>
+        <p>Nifty 50: <b>+0.78%</b></p>
+        <p>Sensex: <b>+0.52%</b></p>
+        <p>Bank Nifty: <b>-0.10%</b></p>
+      </div>
+
+      <div class="side-card">
+        <h4>📰 Latest Finance News</h4>
+        <ul>
+          <li>➡ RBI may hike interest rates this quarter.</li>
+          <li>➡ Gold prices surge due to global demand.</li>
+          <li>➡ Indian startups raise record funding.</li>
+        </ul>
+      </div>
+
+      <div class="side-card">
+        <h4>💸 Bank Interest Rates</h4>
+        <p>SBI FD: <b>6.8%</b></p>
+        <p>HDFC FD: <b>7.1%</b></p>
+        <p>ICICI FD: <b>7.0%</b></p>
+      </div>
+
+      <div class="side-card">
+        <h4>💹 Crypto Trends</h4>
+        <p>BTC: <b>$67,000</b></p>
+        <p>ETH: <b>$3,210</b></p>
+        <p>SOL: <b>$148</b></p>
+      </div>
+    </div>
+
+    <section id="dashboard" class="dashboard">
+      <div class="card">
+        <h2 id="welcomeUser">Welcome!</h2>
+        <p>Enter your expenses below and click <b>Analyse</b> to view your spending.</p>
+      </div>
+
+      <!-- INPUT FIELDS -->
+      <div class="card category-box">
+        <h3>Enter Expenses (in ₹)</h3>
+        <div class="input-group">
+          <label>🏠 Rent: <input type="number" id="rent" placeholder="0" /></label>
+          <label>🍽️ Food: <input type="number" id="food" placeholder="0" /></label>
+          <label>✈️ Travel: <input type="number" id="travel" placeholder="0" /></label>
+          <label>💡 Bills: <input type="number" id="bills" placeholder="0" /></label>
+          <label>🛍️ Shopping: <input type="number" id="shopping" placeholder="0" /></label>
+          <label>💼 Salary: <input type="number" id="salary" placeholder="0" /></label>
+        </div>
+        <button id="analyseBtn">Analyse</button>
+      </div>
+
+      <!-- CHART BOX -->
+      <div class="card chart-box" id="chartCard" style="display:none;">
+        <h3>Spending Overview</h3>
+        <canvas id="spendChart"></canvas>
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="card" id="summaryCard" style="display:none;">
+        <h3>💰 Financial Summary</h3>
+        <p><b>Total Expenses:</b> ₹<span id="sumTotal">0</span></p>
+        <p><b>Remaining Balance:</b> ₹<span id="sumBalance">0</span></p>
+        <p><b>Savings %:</b> <span id="sumSave">0%</span></p>
+      </div>
+
+      <!-- GOAL TRACKER -->
+      <div class="card">
+        <h3>🎯 Saving Goal Tracker</h3>
+        <label>Target (₹): <input id="goalTarget" type="number" placeholder="e.g. 20000" /></label>
+        <label>Saved So Far (₹): <input id="goalSaved" type="number" placeholder="e.g. 5000" /></label>
+        <button id="goalCheck">Check Progress</button>
+        <div style="background:#222; height:15px; border-radius:8px; margin-top:.6rem;">
+          <div id="goalBar" style="height:15px; border-radius:8px; background:#00ffd1; width:0%; transition:width .5s;"></div>
+        </div>
+        <p id="goalText" style="margin-top:.5rem;"></p>
+      </div>
+
+      <!-- SPENDING HISTORY -->
+      <div class="card">
+        <h3>📊 Recent Spending History</h3>
+        <table border="1" width="100%" style="border-collapse:collapse; text-align:center;">
+          <tr><th>Date</th><th>Category</th><th>Amount (₹)</th></tr>
+          <tr><td>Nov 1, 2025</td><td>Food</td><td>1200</td></tr>
+          <tr><td>Nov 2, 2025</td><td>Travel</td><td>800</td></tr>
+          <tr><td>Nov 3, 2025</td><td>Rent</td><td>6000</td></tr>
+        </table>
+      </div>
+
+      <!-- INSIGHTS -->
+      <div class="card">
+        <h3>📈 Finance Insights</h3>
+        <ul>
+          <li>Track your rent and salary ratio every month.</li>
+          <li>Keep fixed expenses under 50% of your income.</li>
+          <li>Invest early — compound interest grows fast!</li>
+          <li>Review spending trends using Timoney charts.</li>
+          <li>Cut non-essential subscriptions to boost savings.</li>
+        </ul>
+      </div>
+
+      <!-- EMI -->
+      <div class="card">
+        <h3>💰 EMI Calculator</h3>
+        <label>Loan Amount (₹):</label>
+        <input id="emi_principal" type="number" /><br>
+
+        <label>Annual Rate (%):</label>
+        <input id="emi_rate" type="number" step="0.01" /><br>
+
+        <label>Tenure (Years):</label>
+        <input id="emi_years" type="number" /><br>
+
+        <button id="emiCalcBtn">Calculate EMI</button>
+        <div id="emiResult" style="margin-top:10px; font-weight:bold;"></div>
+      </div>
+
+      <!-- CREDIT SCORE -->
+      <div class="card">
+        <h3>💳 Credit Score Estimator</h3>
+        <label>Monthly Income (₹):</label>
+        <input id="cs_income" type="number" /><br>
+
+        <label>Monthly Expenses (₹):</label>
+        <input id="cs_expenses" type="number" /><br>
+
+        <label>Loan Count:</label>
+        <input id="cs_loans" type="number" /><br>
+
+        <button id="csBtn">Estimate Score</button>
+        <div id="csResult" style="margin-top:10px; font-weight:bold;"></div>
+      </div>
+
+      <!-- REPORT -->
+      <div class="card">
+        <h3>📊 Financial Report Summary</h3>
+        <div id="reportContent" style="font-size:14px; margin-bottom:10px;">
+          <i>No calculations yet. Fill details to generate report.</i>
+        </div>
+        <button id="exportBtn">📂 Export Budget Report</button>
+      </div>
+
+      <!-- AI BOX -->
+      <div class="card ai-box">
+        <h2>💬 Timoney AI (Ollama)</h2>
+        <textarea id="ai-prompt" placeholder="Ask something about your budget..."></textarea>
+        <button id="ai-send">Ask Timoney</button>
+        <div id="ai-response" class="ai-response"></div>
+      </div>
+
+    </section>
+
+    <footer>
+      <p>© 2025 Timoney AI Finance Assistant</p>
+    </footer>
+
+    <!-- JS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+
+        // Username set
+        const user = localStorage.getItem("timoneyUser");
+        if (user) {
+          document.getElementById("welcomeUser").textContent = `Welcome, ${user}! 👋`;
+        }
+
+        // Logout
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+          localStorage.removeItem("timoneyUser");
+          window.location.href = "dashboard.html";
+        });
+
+        // === Analyse ===
+        document.getElementById("analyseBtn").addEventListener("click", () => {
+          const rent = +rent.value || 0;
+          const food = +food.value || 0;
+          const travel = +travel.value || 0;
+          const bills = +bills.value || 0;
+          const shopping = +shopping.value || 0;
+          const salary = +salary.value || 0;
+
+          const total = rent + food + travel + bills + shopping;
+
+          if (total === 0) return alert("Enter at least one expense!");
+
+          chartCard.style.display = "block";
+          summaryCard.style.display = "block";
+
+          sumTotal.textContent = total;
+          sumBalance.textContent = salary - total;
+          sumSave.textContent = ((salary - total) / salary * 100).toFixed(1) + "%";
+
+          const ctx = spendChart.getContext("2d");
+          new Chart(ctx, {
+            type: "pie",
+            data: {
+              labels: ["Rent","Food","Travel","Bills","Shopping"],
+              datasets: [{ 
+                data: [rent,food,travel,bills,shopping],
+                backgroundColor: ["#00ffd1","#5eead4","#38bdf8","#818cf8","#f472b6"],
+                borderWidth: 0
+              }]
+            },
+            options: { plugins:{ legend:{ labels:{ color:"#e2e8f0" } } } }
+          });
+        });
+
+        // Goal
+        goalCheck.onclick = () => {
+          const t = +goalTarget.value || 0;
+          const s = +goalSaved.value || 0;
+          if (!t || !s) return goalText.textContent = "⚠️ Enter both values.";
+          const p = Math.min(100, (s/t*100).toFixed(1));
+          goalBar.style.width = p+"%";
+          goalText.textContent = p>=100 ? "🎉 Goal achieved!" : `Progress: ${p}%`;
+        };
+
+        // EMI
+        function calcEMI(P, r, y){
+          r = r/100/12;
+          const n=y*12;
+          return (P*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+        }
+
+        emiCalcBtn.onclick = () => {
+          const P = +emi_principal.value;
+          const rate = +emi_rate.value;
+          const years = +emi_years.value;
+
+          if(!P || !rate || !years) return emiResult.textContent="⚠️ Fill all fields";
+
+          const emi=calcEMI(P,rate,years);
+          const total=emi*years*12;
+          const interest=total-P;
+
+          emiResult.innerHTML = `📅 EMI: ₹${emi.toFixed(2)}
+          <br>💸 Interest: ₹${interest.toFixed(2)}
+          <br>💰 Total: ₹${total.toFixed(2)}`;
+        };
+
+        // Credit Score
+        csBtn.onclick = () => {
+          const income=+cs_income.value;
+          const expenses=+cs_expenses.value;
+          const loans=+cs_loans.value;
+          if(!income||!expenses) return csResult.textContent="⚠️ Invalid data";
+
+          let score=800;
+          const ratio=expenses/income;          
+          if(ratio>0.6) score-=100;
+          if(loans>2) score-=50;
+          if(ratio<0.4) score+=30;
+
+          const remark=score>750?"Excellent":score>650?"Good":"Needs Improvement";
+
+          csResult.textContent=`💳 Estimated Credit Score: ${score} (${remark})`;
+        };
+
+        // Export CSV
+        exportBtn.onclick = () => {
+          const csv="Section,Field,Value\n";
+          const blob=new Blob([csv],{type:"text/csv"});
+          const a=document.createElement("a");
+          a.href=URL.createObjectURL(blob);
+          a.download="Timoney_Report.csv";
+          a.click();
+        };
+
+        // === REAL OLLAMA AI INTEGRATION ===
+        const aiBtn = document.getElementById("ai-send");
+        const aiPrompt = document.getElementById("ai-prompt");
+        const aiResponse = document.getElementById("ai-response");
+
+        aiBtn.addEventListener("click", async () => {
+          const question = aiPrompt.value.trim();
+          if (!question) {
+            aiResponse.textContent = "⚠️ Please type something!";
+            return;
+          }
+
+          aiResponse.textContent = "⏳ Thinking...";
+
+          try {
+            const response = await fetch("ai_ollama.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ prompt: question }),
+            });
+
+            const data = await response.json();
+
+            if (data.reply) {
+              aiResponse.textContent = "🤖 " + data.reply;
+            } else if (data.error) {
+              aiResponse.textContent = "⚠️ " + data.error;
+            } else {
+              aiResponse.textContent = "⚠️ Unknown response.";
+            }
+
+          } catch (e) {
+            aiResponse.textContent = "❌ Ollama not running.";
+          }
+        });
+
+        // Finance Panel Toggle
+        financeToggle.onclick = () => {
+          financePanel.classList.toggle("active");
+        };
+
+      });
+    </script>
+
+  </body>
+</html>

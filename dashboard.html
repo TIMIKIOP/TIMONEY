@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timoney Login</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/main.js" defer></script>
+</head>
+
+<body>
+  <header class="navbar">
+    <h1>TIMONEY</h1>
+  </header>
+<img src="assets/img/finance_bg.png" class="login-background">
+
+  <!-- AUTH SECTION -->
+  <section class="auth-container">
+    <h2 id="form-title">Login to Timoney</h2>
+
+    <div id="form-content">
+      <!-- LOGIN FORM -->
+      <form id="loginForm" action="login.php" method="POST">
+        <input type="email" name="email" id="emailLogin" placeholder="Email" required />
+        <input type="password" name="password" id="passLogin" placeholder="Password" required />
+        <button type="submit" id="loginBtn">Login</button>
+      </form>
+
+      <p class="switch-text">
+        Don’t have an account?
+        <a href="#" id="switchToRegister">Register</a>
+      </p>
+    </div>
+  </section>
+<!-- Bank Logo Scroller -->
+<div class="bank-slider">
+  <div class="bank-track">
+    <img src="assets/img/pic1.png">
+    <img src="assets/img/pic2.png">
+    <img src="assets/img/pic3.png">
+    <img src="assets/img/pic4.png">
+    <img src="assets/img/pic5.png">
+    <img src="assets/img/pic6.png">
+    <img src="assets/img/pic7.png">
+    <img src="assets/img/pic8.png">
+
+    <!-- Duplicate for infinite loop -->
+    <img src="assets/img/pic1.png">
+    <img src="assets/img/pic2.png">
+    <img src="assets/img/pic3.png">
+    <img src="assets/img/pic4.png">
+    <img src="assets/img/pic5.png">
+    <img src="assets/img/pic6.png">
+    <img src="assets/img/pic7.png">
+    <img src="assets/img/pic8.png">
+  </div>
+</div>
+
+  <footer>
+    <p>© 2025 Timoney AI Finance Assistant</p>
+  </footer>
+
+  <script>
+    const formTitle = document.getElementById("form-title");
+    const formContent = document.getElementById("form-content");
+    const switchLink = document.getElementById("switchToRegister");
+
+    // Switch to Register Form
+    switchLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      formTitle.textContent = "Create a Timoney Account";
+      formContent.innerHTML = `
+        <form id="registerForm" action="register.php" method="POST">
+          <input type="text" name="name" id="fullname" placeholder="Full Name" required />
+          <input type="email" name="email" id="email" placeholder="Email Address" required />
+          <input type="password" name="password" id="password" placeholder="Create Password" required />
+          <button type="submit" id="registerBtn">Register</button>
+        </form>
+        <p class="switch-text">Already have an account? 
+          <a href="#" id="switchToLogin">Back to Login</a>
+        </p>
+      `;
+
+      attachRegisterEvents();
+    });
+
+    // Go back to Login Form
+    function attachRegisterEvents() {
+      const backToLogin = document.getElementById("switchToLogin");
+      backToLogin.addEventListener("click", (e) => {
+        e.preventDefault();
+        location.reload(); // Reload page to show login form again
+      });
+    }
+  </script>
+</body>
+</html>
